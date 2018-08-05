@@ -1,0 +1,22 @@
+@import "./reset.css";
+@import "./base.css";
+@import "./icon.css";
+/* 定义自己的mint-ui css样式 */
+.mint-indexsection .mint-indexsection-index{
+    background: #333;
+    color:rgba(255,255,255,0.5);
+}
+.mint-indexlist-content{
+    margin-right:0 !important;
+}
+.mint-indexlist-nav{
+    background: none !important;
+    border:none !important; 
+}
+.mint-indexlist-navlist{
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    width:20px;
+    font-size: 12px;
+    color:rgba(255,255,255,0.5);
+}

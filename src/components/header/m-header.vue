@@ -1,44 +1,38 @@
 <template>
-  <div class="m-header">
-    <h4>音乐</h4>
-    <span class="username">
-      <i class="icon-mine"></i>
-    </span>
+  <div class="header">
+    <h3>qq音乐</h3>
+    <div class="username">
+      <span class="icon-mine"></span>
+    </div>
   </div>
 </template>
-
 <script>
-export default {
-  data () {
-    return {
-     
-    }
+  export default{
+
   }
-}
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-.m-header{
-    text-align:center;
-    height:44px;
-    line-height: 44px;
-    color:#ffcd32;
-    position: relative;
-    h4{
-      display: inline-block;
-      background: url(./logo@2x.png) no-repeat left center;
-      background-size:30px 32px; 
-      padding-left:40px;
-
-    }
-    .username{
-      position: absolute;
-      top:4px;
-      right:20px;
-      i{
-        font-size: 20px;
-      }
-    }
+<style scoped>
+.header{
+  height: 44px;
+  line-height: 44px;
+  text-align: center;
+  color:#ffcd32;
+  position: relative;
+  
+}
+.header h3{
+  display: inline-block;
+  padding-left: 34px;
+  background: url(./logo@2x.png) no-repeat left center;
+  background-size:30px 32px; 
+}
+.header .username{
+  width: 44px;
+  height: 44px;
+  position: absolute;
+  right:0px;
+  top:0px;
 }
 </style>
+
+
