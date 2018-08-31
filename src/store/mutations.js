@@ -1,6 +1,5 @@
-import * as types from './mution-types'
 const mutations = {
-    [types.SET_SINGER](state, singer) {
+    setSinger(state,singer){
         state.singer = singer
     },
     setPlaying(state, flag) {

@@ -1,4 +1,3 @@
-import state from "./state";
 
 //export const singer = state=>state.singer
 const getters = {
@@ -14,7 +13,7 @@ const getters = {
     playlist(state){
         return state.playlist
     },
-    sequenceList(state){
+    setquenceList(state){
         return state.sequenceList
     },
     mode(state){
@@ -23,7 +22,7 @@ const getters = {
     currentIndex(state){
         return state.currentIndex
     },
-    currentSong(){
+    currentSong(state){
         return state.playlist[state.currentIndex] || {}
     }
 }

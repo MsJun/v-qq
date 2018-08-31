@@ -1,193 +1,218 @@
 <template>
     <div class="player" v-show="playlist.length">
-        <div class="normal-player" v-show="fullScreen">
+        <transition name="normal">
+        
+        
+        <div class="fullscreen-player" v-show="fullScreen">
             <div class="top">
-                <div class="back" @click.prevent='back'>
+                <div class="back" @click="isFullscreen(false)">
                     <i class="icon-back"></i>
                 </div>
                 <h3>{{currentSong.album}}</h3>
-                <h4>{{currentSong.singer}}</h4>
-                
+                <h5>{{currentSong.singer}}</h5>
             </div>
-            <div class="middle">
-                <div class="bg"><img :src="currentSong.image" alt=""></div>
+            <div class="songImg">
+                <img :src="currentSong.image" alt="">
             </div>
-            <div class="bottom">
-                <div class="operators">
-                    <div>
+            <div class="bottom-btn">
+                <ul>
+                    <li>
                         <i class="icon-sequence"></i>
-                    </div>
-                    <div>
-                        <i class="icon-prev"></i>
-                    </div>
-                    <div>
-                        <i class="icon-pause"></i>
-                    </div>
-                    <div>
-                        <i class="icon-next"></i>
-                    </div>
-                    <div>
-                        <i class="icon icon-not-favorite"></i>
-                    </div>
-                </div>
+                    </li>
+                    <li>
+                         <i class="icon-prev"></i>
+                    </li>
+                    <li>
+                        <i class="icon-play"></i>
+                    </li>
+                     <li>
+                         <i class="icon-next"></i>
+                    </li>
+                    <li>
+                         <i class="icon-favorite"></i>
+                    </li>
+                </ul>
             </div>
         </div>
-        <div class='min-player' v-show='!fullScreen' @click='open'>
-            <div class="left">
-                <div class="icon">
-                    <img :src="currentSong.image" alt="">
-                </div>
-                <div class="info">
+        </transition>
+        <transition name="mini">
+        <div class="min-player" v-show="!fullScreen" @click='isFullscreen(true)'>
+            <div class="min-plager-content">
+                <img :src="currentSong.image" alt="">
+                <div class="min-content">
                     <h3>{{currentSong.album}}</h3>
-                    <p>{{currentSong.singer}}</p>
+                    <h4>{{currentSong.singer}}</h4>
                 </div>
             </div>
-            <div class="right">
-                <div class="control">
-                    <i class="icon-mini icon-pause-mini"></i>
-                </div>
-                <div class="control">
-                    <i data-v-1030556c="" class="icon-playlist"></i>
-                </div>
-                
+            <div class="min-icon">
+                <i class="icon-playlist"></i>
             </div>
         </div>
+        </transition>
     </div>
 </template>
 <script>
-// 播放组件展示需要播放器中有数据和是否全屏展示
 import {mapGetters,mapMutations} from 'vuex'
-   export default{
+    export default{
+        data(){
+            return{
+
+            }
+        },
         created(){
             console.log(this.currentSong)
         },
         methods:{
-            //  点击向下箭头的时候，将全屏切换成false
-            back(){
-                console.log(111)
-                this.setFullScreen(false)
+            // 设置全屏/最小化
+            isFullscreen(flag){
+                this.setFullScreen(flag)
             },
-            open(){
-                this.setFullScreen(true)
-            },
-            ...mapMutations(['setFullScreen'])        
-       },
-       computed:{
-           ...mapGetters(['fullScreen','playlist','currentSong'])
-       }
-   } 
+            ...mapMutations(['setFullScreen'])
+        },
+        computed:{
+            ...mapGetters([
+                'fullScreen',
+                'playlist',
+                'currentSong'
+            ])
+        }
+    }
 </script>
-<style scoped>
-    .normal-player{
-        position: fixed;
-        top:0;
-        left:0;
-        right:0;
-        bottom:0;
-        width: 100%;
-        height: 100%;
-        background: #222;
+<style scoped lang="scss">
+.normal-enter-active, .normal-leave-active{
+    transition: all 0.4s;
+    .top, .bottom-btn{
+          transition: all 0.4s cubic-bezier(0.86, 0.18, 0.82, 1.32)
     }
-    .top{
-        position: fixed;
-        top:0;
-        left:0;
-        width: 100%;
-        height: 80px;
-        text-align: center;
-    }
-    .top .back{
-        position: absolute;
-        top:0;
-        left:0;
-        width: 40px;
-        height: 40px;
-        text-align: center;
-        line-height: 40px;
-        transform: rotate(-90deg);
-        color:#ffcd32;
-    } 
-    .top h3{
-        line-height: 40px;
-        color:#fff;
-    }
-    .top h4{
-        color:#fff;
-    }
-    .middle .bg{
-        padding-top:80px;
-        text-align: center;
-        border-radius: 50%;
-    }
-    .middle .bg img{
-        border-radius: 50%;
-    }
-    .bottom{
-        width: 100%;
-        position: absolute;
-        bottom:50px;
-        left:0;
-    }
-    .bottom .operators{
-        width: 100%;
+}
+.normal-enter, .normal-leave-to{
+    opacity: 0;
+}
+.mini-enter-active, .mini-leave-active{
+    transition: all 0.4s;
+}
+.mini-enter, .mini-leave-to{
+    opacity: 0;
+}
+.min-player{
+    height: 50px;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left:0;
+    background: #000;
+    z-index:99;
+    display: flex;
+    padding:0 10px 0 20px;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    .min-plager-content{
         display: flex;
-        color:#ffcd32;
-        font-size: 30px;
-        align-items: center; 
+        align-items: center;
+        img{
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .min-content{
+           color:#fff;
+            font-size: 12px;
+            margin-left:10px; 
+            h4{
+                color:#333;
+                margin-top:6px;
+            }
+        }
     }
-    .bottom .operators div{
+}
+.min-icon{
+    color:#ffcd32;
+    font-size: 26px;
+}
+.fullscreen-player{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background:#000;
+    z-index: 99;
+    top:0;
+    left:0;
+    color:#fff;
+    background-size:cover; 
+    background-repeat: no-repeat;
+}
+.top{
+    width: 100%;
+    text-align: center;
+    position: relative;
+    h3{
+        line-height: 40px;
+    }
+}
+
+.back{
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    color:#ffcd32;
+    transform: rotate(-90deg);
+    position: absolute;
+}
+.songImg{
+    width: 80%;
+    height: 300px;
+    position:absolute;
+    left:50%;
+    top:10%;
+    margin-left:-40%;
+    //animation: router 4s linear infinite;
+}
+@keyframes router {
+    from{
+        transform: rotate(0deg)
+    }
+    to{
+        transform: rotate(360deg)
+    }
+}
+.songImg img{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom: 0;
+    margin:auto;
+    border-radius: 50%;
+}
+.bottom-btn{
+    position: fixed;
+    bottom:10%;
+    left:0;
+    width: 100%;
+    ul{
+        display: flex;
+        align-items: center;
+    }
+    li{
         width: 20%;
-        text-align:center; 
+        text-align: center;
+        i{
+            display: inline-block;
+            font-size: 26px;
+            color:#ffcd32;
+        }
+        &:nth-child(3){
+            i{
+                font-size: 36px;
+            }
+        }
     }
-    .icon-pause{
-        font-size: 40px;
-    }
-    .min-player{
-        position: fixed;
-        bottom:0;
-        left:0;
-        width: 100%;
-        height: 60px;
-        display: flex;
-        background: #333;
-        z-index: 99;
-        align-items: center;
-        justify-content:space-between;
-    }
-    .min-player .left{
-        display: flex;
-    } 
-    .min-player .left .info{
-        display: flex;
-       flex-direction:column;
-       justify-content:center;
-       font-size: 14px;
-    }
-    .min-player .info h3{
-        margin-bottom:4px;
-        color:#fff;
-    }
-    .min-player .info p{
-        color:rgba(255,255,255,0.3);
-    }
-    .min-player .icon{
-        width: 40px;
-        height:40px;
-        padding:0 20px;
-    }
-    .min-player .icon img{
-        max-width:40px;
-        border-radius: 50%;
-    }
-    .right{
-        display: flex;
-        align-items: center;
-        color:#ffcd32;
-    }
-    .control{
-        font-size: 32px;
-        padding:0 10px;
-    }
-   
+    
+}
+
 </style>
 

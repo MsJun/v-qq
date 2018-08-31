@@ -1,8 +1,6 @@
 <template>
      <div class="singer">
-        <div class="singer-content" ref="wrapper">
-          <listview :data='singers' @select="getselect"></listview>
-        </div>
+          <listview :data='singers' @selected="getselect"></listview>
         <router-view></router-view>
      </div>      
 </template>
@@ -24,16 +22,16 @@ import {mapMutations} from 'vuex'
         },
         methods:{
             // 将Mutations的方法映射过来
-            ...mapMutations({
-                setSinger:'SET_SINGER'
-            }),
+            ...mapMutations(['setSinger']),
             // 接受当前点击的元素的id
             // 进行跳转到详情页
             getselect(data){
+                console.log(data.id)
                 //console.log(data.id)
                 this.$router.push({
                     path:`/singer/${data.id}`
                 })
+                console.log(data)
                 // 将当前数据挂在到vuex；上
                 this.setSinger(data)
             },

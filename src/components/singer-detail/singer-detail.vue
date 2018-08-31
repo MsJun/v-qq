@@ -1,9 +1,9 @@
 <template>
-    <div class="singer-detail">
+    <transition class="singer-detail">
        <transition name="slide">
            <musicList :title='title' :songs='songs' :bgImage='bgImage'></musicList>
        </transition>
-    </div>
+    </transition>
 </template>
 <script>
 import {mapGetters} from 'vuex'
@@ -25,6 +25,7 @@ export default{
         this.bgImage = this.singer.avatar
     },
     methods:{
+          //获取当前歌手信息
         _getSingerDetail(){
             //   如果当前没有id则跳转回歌手列表
             if(!this.singer.id){
@@ -35,7 +36,7 @@ export default{
                 if(res.code==0){
                     //console.log(res.data.list)
                     // 对数据进行处理
-                    this. songs = this._normalizeSongs(res.data.list)
+                    this.songs = this._normalizeSongs(res.data.list)
                     console.log(this.song)
                 }
             }) 

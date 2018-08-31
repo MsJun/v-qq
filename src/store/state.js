@@ -11,12 +11,9 @@ const state = {
     playlist:[],
     // 随机播放列表
     sequenceList:[],
-    // 播放方式
+    // 播放方式(按序,随机)
     mode:playMode.sequence,
     //   当前播放歌曲的索引
     currentIndex:-1
-
-
-
 }
 export default state

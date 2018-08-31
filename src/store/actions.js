@@ -1,4 +1,3 @@
-import * as types from './mution-types'
 let actions = {
     selectplay({commit,state},{list,index}){
         // 直接调用mutation中的方法,并传入参数

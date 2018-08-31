@@ -25,7 +25,7 @@
 import songlist from '../../base/song-list/song-list'
 import scroll from '../../base/scroll/scroll'
 import loading from '../../base/loading/loading'
-import {mapActions} from 'vuex'
+import {mapActions,mapMutations} from 'vuex'
     export default{
         props:{
             bgImage:{
@@ -62,7 +62,6 @@ import {mapActions} from 'vuex'
             scroll(pos){
                 // console.log(pos)
                 // 拿到滚动的距离
-
                 this.scrollY = pos.y
             },
             //  获取从子组件传入的当前歌曲的信息和索引
@@ -71,9 +70,11 @@ import {mapActions} from 'vuex'
                 // 调用actions中的方法，将当前歌手的歌曲列表和当前歌曲的索引传入
                 // 这样vuex中的就有相应的数据
                 this.selectplay({
-                    list:this.songs,index:index
+                    list:this.songs,
+                    index:index
                 })
             },
+           // ...mapActions(['selectplay'])
             ...mapActions(['selectplay'])
         },
         computed:{
@@ -89,27 +90,26 @@ import {mapActions} from 'vuex'
         watch:{
             // 监听滚动的距离
             scrollY(newY){
-                // 设置位置
-                // 向上滚动式负值，需要设置一个最小滚动距离，最小滚动距离就是距离上面图片的高度
-                //又不想滚动到最上面,所以加上40
-                this.maxtranslateY = -this.imageHeight + 40
-                //  如果滚动的距离小于最小滚动距离
-                if(newY<this.maxtranslateY){
-                     // 将图片的层级提高，压在滚动的图层上面
-                    this.zIndex = 2
-                    // 就让滚动的距离等于最小滚动距离
-                    newY = this.maxtranslateY
-                    //并设置图片的高度
-                    this.$refs.bgImage.style.paddingTop = 0
+                // 设置最小滚动距离
+                //向上是负值
+                let minScroll = -this.imageHeight+40
+                let zIndex = 0;
+                // 如果滚动的距离比最小值还小
+                if(newY<minScroll){
+                    // 等于最小值
+                    newY = minScroll
+                    // 设置图片的高度
                     this.$refs.bgImage.style.height='40px'
+                    this.$refs.bgImage.style.paddingTop = 0;
+                    zIndex = 2
                     this.$refs.playall.style.display='none'
                 }else{
-                    // 如果没有超出最小滚动距离
-                    this.$refs.bgImage.style.paddingTop = '70%'
-                    this.$refs.bgImage.style.height= 0
-                    this.zIndex = 0;
+                    this.$refs.bgImage.style.height='0'
+                    this.$refs.bgImage.style.paddingTop = '70%';
                     this.$refs.playall.style.display='block'
+                    zIndex = 0
                 }
+                // 当向下拉动的时候，图片会进行放大
                 // 设置下拉，当下拉的时候图片放大
                 let scale = 1;
                 // 设置一个公式
@@ -118,10 +118,10 @@ import {mapActions} from 'vuex'
                 if(newY>0){
                     scale = 1+percet
                 }
-                this.$refs.layer.style.transform = "translateY("+newY+"px)"
-                this.$refs.bgImage.style.zIndex =  this.zIndex
-                // 设置图片放大
-                 this.$refs.bgImage.style.transform = 'scale('+scale+')'
+
+                this.$refs.bgImage.style.zIndex = zIndex
+                this.$refs.layer.style.transform = `translateY(${newY})px`
+                this.$refs.bgImage.style.transform = `scale(${scale})`
                 
             }
         },
@@ -199,7 +199,8 @@ import {mapActions} from 'vuex'
     border:1px solid #ffcd32;
 }
 .songs-list{
-    padding-top:20px;
+    z-index: 999;
+    background: #222;
 }
 .bg-layer{
     height: 100%;

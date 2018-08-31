@@ -16,7 +16,7 @@
         },
         methods:{
             getinit(item){
-               return item.singer+'·'+item.album
+               return `${item.singer}·${item.album}`
             },
             //  点击播放列表，将当前点击的歌曲和当前歌曲的索引传给父组件
             playcur(playcur,index){
